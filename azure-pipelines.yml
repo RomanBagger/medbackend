@@ -8,28 +8,22 @@ trigger:
 resources:
 - repo: self
 
-variables:
-  tag: '$(Build.BuildId)'
-
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      name: 'Default'
-      demands:
+pool:
+    name: 'Default'
+    demands:
         - agent.name -equals instance-20241203-145320
 
-    steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'docker'
-        repository: 'romanbeggar/backend'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        buildContext: '.'
-        buildArguments: |
-          --build-arg BUILDKIT=1  # Включение BuildKit
-        tags: $(tag)
+steps:
+
+- task: Docker@2
+  displayName: 'Login to Docker Registry'
+  inputs:
+    command: 'login'
+    containerRegistry: 'docker'
+
+- script: |
+      docker buildx build -t romanbeggar/backend:latest .
+  displayName: 'Docker Build'
+
+- script: |
+      docker push romanbeggar/backend:latest
