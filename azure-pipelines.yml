@@ -22,7 +22,7 @@ steps:
     containerRegistry: 'docker'
 
 - script: |
-      docker buildx build --tag romanbeggar/backend:latest .
+      docker build -t romanbeggar/backend:latest .
   displayName: 'Docker Build'
 
 - script: |
