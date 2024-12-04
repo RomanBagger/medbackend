@@ -30,8 +30,8 @@ RUN gradle clean build -x test
 # Stage 2: Extract the JAR file
 FROM amazoncorretto:17-alpine AS extractor
 WORKDIR extracted
-COPY --from=builder /app/build/libs/*.jar /extracted/
-RUN java -Djarmode=layertools -jar extracted/*.jar extract
+COPY --from=builder /app/build/libs/*.jar ./
+RUN java -Djarmode=layertools -jar /extracted/*.jar extract
 
 # Stage 3: Create the final image
 FROM amazoncorretto:17-alpine
