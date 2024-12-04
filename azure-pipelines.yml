@@ -29,3 +29,7 @@ stages:
         repository: 'romanbeggar/backend'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
+        buildContext: '.'
+        buildArguments: |
+          --build-arg BUILDKIT=1  # Включение BuildKit
+        tags: $(tag)
