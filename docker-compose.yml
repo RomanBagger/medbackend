@@ -1,0 +1,63 @@
+name: medfast
+services:
+
+  postgresql:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: medfast
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secret
+      SERVER_PORT: 5432
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: .
+    image: healflowdev/medfast:latest
+    depends_on:
+      - postgresql
+    environment:
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/medfast
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: secret
+      #MAIL_PASSWORD: "pyne podv rskn cqof"
+      SPRING_PROFILES_ACTIVE: dev  # Default profile; change to prod as needed
+    ports:
+      - "8080:8080"
+    # links:
+    #   - logstash
+
+  # elasticsearch:
+  #   image: elasticsearch:7.17.23
+  #   volumes:
+  #     - ./config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+  #   ports:
+  #     - "9200:9200"
+  #     - "9300:9300"
+  #   environment:
+  #     - "ES_JAVA_OPTS=-Xmx256m -Xms256m"
+
+  # logstash:
+  #   image: logstash:7.17.23
+  #   command: -f /etc/logstash/conf.d/
+  #   volumes:
+  #     - ./config/logstash/:/etc/logstash/conf.d/
+  #   ports:
+  #     - "9999:9999"
+  #   environment:
+  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+  #   depends_on:
+  #     - elasticsearch
+
+  # kibana:
+  #   image: kibana:7.17.23
+  #   volumes:
+  #     - ./config/kibana/:/usr/share/kibana/config/
+  #   ports:
+  #     - "5601:5601"
+  #   depends_on:
+  #     - elasticsearch
+  #   command: >
+  #     sh -c "/usr/share/kibana/config/setup.sh"
+
