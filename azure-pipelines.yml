@@ -16,14 +16,8 @@ pool:
 steps:
 
 - task: Docker@2
-  displayName: 'Login to Docker Registry'
   inputs:
-    command: 'login'
     containerRegistry: 'docker'
-
-- script: |
-      docker build -t romanbeggar/backend:latest .
-  displayName: 'Docker Build'
-
-- script: |
-      docker push romanbeggar/backend:latest
+    repository: 'romanbeggar/backend'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
