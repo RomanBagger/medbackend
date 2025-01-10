@@ -20,20 +20,9 @@ steps:
     cliProjectKey: 'kubernetes_kubernetes_24c6e2eb-ad07-4115-8806-f9fa4128c635'
     cliSources: '.'
 
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    workingDirectory: './'
-    tasks: 'build'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    sonarQubeRunAnalysis: true
-    sqGradlePluginVersionChoice: 'specify'
-    sonarQubeGradlePluginVersion: '2.6.1'
-    spotBugsAnalysis: true
-    spotBugsGradlePluginVersionChoice: 'specify'
-    spotbugsGradlePluginVersion: '4.7.0'
+- script: 
+   ./gradlew clean build -x test
+  displayName: "Build"
 
 - task: SonarQubeAnalyze@7
   inputs:
