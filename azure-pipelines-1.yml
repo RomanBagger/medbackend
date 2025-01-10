@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger: none
 
 pool:
@@ -17,12 +12,15 @@ steps:
     SonarQube: 'myconnect'
     scannerMode: 'cli'
     configMode: 'manual'
-    cliProjectKey: 'kubernetes_kubernetes_24c6e2eb-ad07-4115-8806-f9fa4128c635'
+    cliProjectKey: 'kubernetes_kubernetes_24c6eeb-ad07-4115-8806-f9fa4128c635'
     cliSources: '.'
+    extraProperties: |
+      sonar.branch.name=
+      sonar.branch.target=
 
-- script: 
-   ./gradlew clean build -x test
-  displayName: "Build"
+- script: |
+    ./gradlew clean build -x test
+  displayName: "Gradle Build"
 
 - task: SonarQubeAnalyze@7
   inputs:
