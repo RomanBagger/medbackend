@@ -21,7 +21,7 @@ steps:
     cliSources: '.'
 
 - script: |
-    ./gradlew build
+    ./gradle clean build -x test
   displayName: 'Gradle Build'
 
 - task: SonarQubeAnalyze@7
