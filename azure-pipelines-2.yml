@@ -20,6 +20,7 @@ steps:
     extraProperties: |
       sonar.branch.name= 
       sonar.branch.target=
+      sonar.java.binaries=build/classes
 
 - script: |
     ./gradlew clean build -x test
