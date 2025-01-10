@@ -1,0 +1,34 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: "Default"
+  demands: 
+    - agent.name -equals instance-20250110-002118
+
+steps:
+
+- task: SonarQubePrepare@7
+  inputs:
+    SonarQube: 'myconnect'
+    scannerMode: 'cli'
+    configMode: 'manual'
+    cliProjectKey: 'kubernetes_kubernetes_24c6e2eb-ad07-4115-8806-f9fa4128c635'
+    cliSources: '.'
+    extraProperties: |
+      sonar.branch.name= 
+      sonar.branch.target=
+
+- script: |
+    ./gradlew clean build -x test
+  displayName: "Gradle Build"
+
+- task: SonarQubeAnalyze@7
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarQubePublish@7
+  inputs:
+    pollingTimeoutSec: '300'
